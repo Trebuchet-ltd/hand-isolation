@@ -7,14 +7,14 @@ window.onload = () => {
     initModel();
 }
 
-async function initModel(){
+async function initModel() {
     // model = await tf.loadLayersModel(URL);
     console.log("Initialised");
     initButton();
 }
 
 
-function initButton(){
+function initButton() {
     let button = document.getElementById("webcamButton");
     button.classList.remove('disabled');
     button.disabled = false;
@@ -52,7 +52,7 @@ async function init() {
     function processVideo() {
 
         let begin = Date.now();
-    
+
         cap.read(src);
 
         let height = src.rows;
@@ -108,6 +108,21 @@ function stop(video) {
     video.srcObject = null;
 }
 
+// function remove_pixels(src) {
+//     let canvas = document.getElementById("webcam-canvas");
+//     var img = nj.images.read(canvas)
+
+//     let removed;
+//     img.assign((x) => { console.log(x); return x })
+
+
+//     let out = document.getElementById("canvasOutput");
+//     var gray = nj.images.rgb2gray(img)
+//     nj.images.save(gray, out)
+//     // console.log(A)
+//     return src
+// }
+
 function processImage(src) {
     // console.log("Creating dst.");
     let dst = new cv.Mat();
@@ -118,7 +133,7 @@ function processImage(src) {
     let conv2 = new cv.Mat();
     // console.log("Convert colorspace.");
     cv.cvtColor(dst, conv1, cv.COLOR_RGB2HSV, 0);
-    // cv.cvtColor(dst, conv2, cv.COLOR_RGBA2GRAY, 0);
+    cv.cvtColor(dst, conv2, cv.COLOR_RGBA2GRAY, 0);
 
     let lower = [0, 40, 30, 0];
     let higher = [43, 255, 254, 255];
@@ -133,18 +148,22 @@ function processImage(src) {
     cv.inRange(conv1, low, high, mask);
 
     cv.addWeighted(mask, 0.5, mask, 0.5, 0.0, mask);
-    cv.medianBlur(mask, mask, 5);
+    // cv.medianBlur(mask, mask, 5);
 
     let skin = new cv.Mat();
-    cv.bitwise_and(dst, dst, skin, mask)
+    cv.bitwise_and(conv2, conv2, skin, mask)
 
+    // console.log("Canny.");
+    let edges = new cv.Mat();
+    cv.Canny(skin, edges, 60, 60, 3, false);
     dst.delete();
     low.delete();
     high.delete();
     conv1.delete();
     conv2.delete();
     mask.delete();
+    skin.delete();
 
     // console.log("Retruning.");
-    return skin;
+    return edges;
 }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Hand isolation</title>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="assets/favicon.png">
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+	<script type="text/javascript" src="assets/js/tf.min.js"></script>
+	<script src="https://docs.opencv.org/3.4/opencv.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="assets/css/learning.css">
+	<link rel="stylesheet" type="text/css" href="assets/css/common.css">
+
+	<script type="text/javascript" src="assets/js/learing.js"></script>
+
+</head>
+
+<body>
+
+
+	<div class="container">
+		<div class="space-50"></div>
+		<div class="space-50"></div>
+
+		<div class="space-20"></div>
+		<div class="text-center">
+		</div>
+		<div class="container">
+			<div class="row" style="border-color: rgba(0,0,255,0.5)	  ">
+
+
+
+				<div class="col middle-col sbox bg-white shadow rounded-lg">
+					<div class="container mt-4   text-center ">
+						<div class="space-20"></div>
+
+						<button type="button" class="btn btn-light L-btn-cam disabled" onclick="init()" id="webcamButton" disabled> Click to start webcam
+							<img class="pl-3" src="assets/img/cam.svg"></button>
+						<div class="space-20"></div>
+						<input type="checkbox" name="stream" value="stream" id="stream" disabled hidden>
+
+
+
+						<canvas id="webcam-canvas" width="308" height="308"></canvas>
+
+						<canvas id="canvasOutput" width="320" height="240"></canvas>
+						<video id="videoInput" width="640" height="480"></video>
+						<div class="space-20"></div>
+						<div class="text-center">
+							<button class="flip-btn mr-2">
+								Flip <img class="pl-2" src="assets/img/flip.svg">
+							</button>
+						</div>
+						<div class="space-50"></div>
+
+
+
+
+
+
+
+
+					</div>
+				</div>
+
+			</div>
+
+
+		</div>
+
+
+
+
+
+	</div>
+
+</body>
+
+</html>

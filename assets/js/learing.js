@@ -113,9 +113,9 @@ function stop(video) {
 }
 
 function conditions(r, g, b) {
-    t1 = 30
-    t2 = 30
-    t3 = 20
+    t1 = 20
+    t2 = 20
+    t3 = 30
 
     // RGB
     if (g - r > t1 && g - b > t1)

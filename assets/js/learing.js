@@ -122,8 +122,8 @@ function conditions(r, g, b) {
         return true
     if (b - r > t1 && b - g > t1)
         return true
-    if (r - b > t1 && r - g > t1)
-        return true
+    // if (r - b > t1 && r - g > t1)
+    //     return true
 
     // CMY
     if (r - g > t2 && b - g > t2)

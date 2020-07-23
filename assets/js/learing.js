@@ -134,13 +134,13 @@ function conditions(r, g, b) {
         return true
 
     // GRAY
-    // if (
-    //     (r - b < t3 || b - r < t3) &&
-    //     (r - g < t3 || g - r < t3) &&
-    //     (b - g < t3 || g - b < t3)
-    // ){
-    //     return true;
-    // }
+    if (
+        (Math.abs(r - b) < t3) &&
+        (Math.abs(r - g) < t3) &&
+        (Math.abs(b - g) < t3)
+    ){
+        return true;
+    }
 
     return false
 }
@@ -170,7 +170,7 @@ function remove_pixels(src) {
                 let g = processed.get(i, j, 1);
                 let b = processed.get(i, j, 2);
 
-                if (!conditions(r, g, b)) {
+                if (conditions(r, g, b)) {
                     processed.set(i, j, 0, 255)
                     processed.set(i, j, 1, 255)
                     processed.set(i, j, 2, 255)

@@ -1,6 +1,8 @@
 let webcam, labelContainer, letter, winCount, lossCount, winSound;
 
+let l;
 
+let processed;
 
 window.onload = () => {
 
@@ -70,15 +72,17 @@ async function init() {
 
         cv.imshow("webcam-canvas", square);
 
-        let dst = processImage(square);
+        remove_pixels(square);
 
-        cv.imshow("canvasOutput", dst);
+        // let dst = processImage(square);
+
+        // cv.imshow("canvasOutput", dst);
         // src.delete();
         square.delete();
-        dst.delete();
+        // dst.delete();
 
-        let image = tf.browser.fromPixels(document.getElementById("canvasOutput"), 1);
-        image = image.reshape([1, 128, 128, 1])
+        // let image = tf.browser.fromPixels(document.getElementById("canvasOutput"), 1);
+        // image = image.reshape([1, 128, 128, 1])
 
 
 
@@ -108,20 +112,86 @@ function stop(video) {
     video.srcObject = null;
 }
 
-// function remove_pixels(src) {
-//     let canvas = document.getElementById("webcam-canvas");
-//     var img = nj.images.read(canvas)
+function conditions(r, g, b) {
+    t1 = 40
+    t2 = 40
+    t3 = 10
 
-//     let removed;
-//     img.assign((x) => { console.log(x); return x })
+    // RGB
+    if (g - r > t1 && g - b > t1)
+        return true
+    if (b - r > t1 && b - g > t1)
+        return true
+    if (r - b > t1 && r - g > t1)
+        return true
+
+    // CMY
+    if (r - g > t2 && b - g > t2)
+        return true
+    if (r - b > t2 && g - b > t2)
+        return true
+    if (g - r > t2 && b - r > t2)
+        return true
+
+    // GRAY
+    // if (
+    //     (r - b < t3 || b - r < t3) &&
+    //     (r - g < t3 || g - r < t3) &&
+    //     (b - g < t3 || g - b < t3)
+    // ){
+    //     return true;
+    // }
+
+    return false
+}
+
+function remove_pixels(src) {
+    let canvas = document.getElementById("webcam-canvas");
+    var img = nj.images.read(canvas)
+    let out = document.getElementById("canvasOutput");
 
 
-//     let out = document.getElementById("canvasOutput");
-//     var gray = nj.images.rgb2gray(img)
-//     nj.images.save(gray, out)
-//     // console.log(A)
-//     return src
-// }
+    // console.log(img.shape)
+
+
+    if (img.shape.length == 3) {
+
+        processed = nj.images.resize(img, 128, 128)
+        processed = processed.slice(null, null, [3])
+
+        console.log(processed.shape)
+
+        // nj.images.resize(img, 14, 12)
+
+        // l = []
+        for (let i = 0; i < processed.shape[0]; i++) {
+            for (let j = 0; j < processed.shape[1]; j++) {
+                let r = processed.get(i, j, 0);
+                let g = processed.get(i, j, 1);
+                let b = processed.get(i, j, 2);
+
+                if (!conditions(r, g, b)) {
+                    processed.set(i, j, 0, 255)
+                    processed.set(i, j, 1, 255)
+                    processed.set(i, j, 2, 255)
+                }
+            }
+
+        }
+        nj.images.save(processed, out)
+
+        // console.log(l)
+
+    }
+
+
+
+
+    // var gray = nj.images.rgb2gray(img)
+    // nj.images.save(gray, out)
+    // console.log(A)
+    return src
+}
 
 function processImage(src) {
     // console.log("Creating dst.");

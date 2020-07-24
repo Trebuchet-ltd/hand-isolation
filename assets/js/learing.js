@@ -25,6 +25,7 @@ function initButton() {
 
 // Load the image model and setup the webcam
 async function init() {
+
     // const modelURL = URL + "model.json";
     let buttonClicked = Date.now();
     let checkBox = document.getElementById("stream");
@@ -72,14 +73,14 @@ async function init() {
 
         cv.imshow("webcam-canvas", square);
 
-        remove_pixels(square);
+        // remove_pixels(square);
 
-        // let dst = processImage(square);
+        let dst = processImage(square);
 
-        // cv.imshow("canvasOutput", dst);
+        cv.imshow("canvasOutput", dst);
         // src.delete();
         square.delete();
-        // dst.delete();
+        dst.delete();
 
         // let image = tf.browser.fromPixels(document.getElementById("canvasOutput"), 1);
         // image = image.reshape([1, 128, 128, 1])
@@ -225,7 +226,7 @@ function processImage(src) {
 
     // console.log("Canny.");
     let edges = new cv.Mat();
-    cv.Canny(skin, edges, 60, 60, 3, false);
+    cv.Canny(skin, edges, 100, 200, 3, false);
     dst.delete();
     low.delete();
     high.delete();

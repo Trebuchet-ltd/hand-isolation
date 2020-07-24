@@ -226,7 +226,7 @@ function processImage(src) {
 
     // console.log("Canny.");
     let edges = new cv.Mat();
-    cv.Canny(skin, edges, 100, 200, 3, false);
+    cv.Canny(src, edges, 100, 200, 3, false);
     dst.delete();
     low.delete();
     high.delete();
